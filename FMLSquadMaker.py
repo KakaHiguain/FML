@@ -2,10 +2,12 @@
 
 from collections import defaultdict
 import csv
+from pathlib import Path
 import re
 from typing import List, Dict, Set
 
 from TransfermarktSquadMaker import TMPlayer
+from common import *
 from player import Player
 
 
@@ -48,9 +50,9 @@ class PlayerDataBase:
         return self.dict.get((club, number), None)
 
 
-def read_player_csv(file: str, player_type: type) -> List[Player]:
+def read_player_csv(csv_file: Path, player_type: type) -> List[Player]:
     player_list = []
-    with open(file) as f:
+    with csv_file.open('r') as f:
         for row in csv.reader(f):
             if row[0] == 'Name':
                 continue
@@ -133,7 +135,7 @@ def standardize_player_names(player_list: List[TMPlayer]):
         final_name_set.add(player.name)
 
 
-def main(fs_csv, tm_csv, output_csv):
+def main(fs_csv: Path, tm_csv: Path, output_csv: Path):
     fs_player_list = read_player_csv(fs_csv, FSPlayer)
     tm_player_list = read_player_csv(tm_csv, TMPlayer)
     fs_player_database = PlayerDataBase(fs_player_list)
@@ -142,16 +144,18 @@ def main(fs_csv, tm_csv, output_csv):
     fml_player_list = merge_database(fs_player_database, tm_player_database)
 
     standardize_player_names(fml_player_list)
-    with open(output_csv, "w") as export_csv:
-        export_csv.write("Name,Position,Club,Number,Unique ID\n")
+    with output_csv.open("w") as f:
+        f.write("Name,Position,Club,Number,Unique ID\n")
         for player in fml_player_list:
             # Detect non-alphabet character.
             if not re.match(r"^[A-Za-z'.\-]+$", player.name):
                 print(player.name)
-            export_csv.write(player.to_csv_line())
+            f.write(player.to_csv_line())
             # print(player.to_csv_line().rstrip())
 
 
 if __name__ == '__main__':
-    # main('21-22/FMLplayers21-22.csv', '21-22/tmsquad-fml.csv', "21-22/FMLsquad.csv")
-    main('21-22/FMCplayers21-22.csv', '21-22/tmsquad-fmc.csv', "21-22/FMCsquad.csv")
+    for tor in ['FML', 'FMC']:
+        main(EXPORT_PATH / f'{tor}players{SEASON}.csv',
+             EXPORT_PATH / f'tmsquad-{tor}.csv',
+             EXPORT_PATH / f"{tor}squad.csv")

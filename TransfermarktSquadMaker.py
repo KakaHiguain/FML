@@ -7,8 +7,9 @@ from typing import List
 from bs4 import BeautifulSoup
 
 from Crawler import get_page
-from player_name_utils import remove_special_char
+from common import *
 from player import Player
+from player_name_utils import remove_special_char
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.108 Safari/537.36',
@@ -162,8 +163,9 @@ def get_players(club: List[str]) -> List[TMPlayer]:
 def get_fml_squad():
     league_base_url = BASE_URL + "/jumplist/startseite/wettbewerb/"
 
-    with open("21-22/tmsquad-fml.csv", "w") as export_csv:
-        export_csv.write("Name,Position,Club,Number,Unique ID\n")
+    csv_file = EXPORT_PATH / 'tmsquad-FML.csv'
+    with csv_file.open("w") as f:
+        f.write("Name,Position,Club,Number,Unique ID\n")
         for league_name, league_suffix in TOP4_LEAGUE.items():
             league_url = league_base_url + league_suffix
             print("Visit:", league_name, league_url)
@@ -173,7 +175,7 @@ def get_fml_squad():
             for club in clubs:
                 club[0] = remove_special_char(club[0])
                 for player in get_players(club):
-                    export_csv.write(player.to_csv_line())
+                    f.write(player.to_csv_line())
 
 
 def read_ucl_page() -> List[List[str]]:
@@ -194,15 +196,16 @@ def read_ucl_page() -> List[List[str]]:
 
 
 def get_fmc_squad():
-    with open("21-22/tmsquad-fmc.csv", "w") as export_csv:
-        export_csv.write("Name,Position,Club,Number,Unique ID\n")
+    csv_file = EXPORT_PATH / 'tmsquad-FMC.csv'
+    with csv_file.open("w") as f:
+        f.write("Name,Position,Club,Number,Unique ID\n")
         clubs = read_ucl_page()
         # clubs = [['Paris', 'https://www.transfermarkt.com/fc-paris-saint-germain/startseite/verein/583/saison_id/2020'],
         #          ['Porto', 'https://www.transfermarkt.com/fc-porto/startseite/verein/720/saison_id/2020']]
         for club in clubs:
             club[0] = remove_special_char(club[0])
             for player in get_players(club):
-                export_csv.write(player.to_csv_line())
+                f.write(player.to_csv_line())
 
 
 if __name__ == '__main__':
