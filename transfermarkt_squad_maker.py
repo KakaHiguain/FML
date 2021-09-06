@@ -6,8 +6,8 @@ from typing import List
 
 from bs4 import BeautifulSoup
 
-from Crawler import get_page
 from common import *
+from crawler import get_page
 from player import Player
 from player_name_utils import remove_special_char
 

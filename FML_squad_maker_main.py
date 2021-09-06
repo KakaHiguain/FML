@@ -6,9 +6,9 @@ from pathlib import Path
 import re
 from typing import List, Dict, Set
 
-from TransfermarktSquadMaker import TMPlayer
 from common import *
 from player import Player
+from transfermarkt_squad_maker import TMPlayer
 
 
 HARECODED_PLAYER_NAMES = {
@@ -155,7 +155,7 @@ def main(fs_csv: Path, tm_csv: Path, output_csv: Path):
 
 
 if __name__ == '__main__':
-    for tor in ['FML', 'FMC']:
-        main(EXPORT_PATH / f'{tor}players{SEASON}.csv',
-             EXPORT_PATH / f'tmsquad-{tor}.csv',
-             EXPORT_PATH / f"{tor}squad.csv")
+    for tournament in ['FML']:
+        main(EXPORT_PATH / f'{tournament}players{SEASON}.csv',
+             EXPORT_PATH / f'tmsquad-{tournament}.csv',
+             EXPORT_PATH / f"{tournament}squad.csv")

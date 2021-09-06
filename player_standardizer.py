@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import re
 
-from FMLSquadMaker import standardize_player_names
-from TransfermarktSquadMaker import TMPlayer
+from FML_squad_maker_main import standardize_player_names
+from transfermarkt_squad_maker import TMPlayer
 
 
 player_list = []
