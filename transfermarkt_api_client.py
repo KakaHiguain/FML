@@ -8,6 +8,7 @@ import requests
 from typing import List
 
 from player_name_utils import remove_special_char
+from transfermarkt_club_name_utils import standardize_club_name
 from transfermarkt_player import TMPlayer
 
 
@@ -62,7 +63,7 @@ class TransfermarktApiClient:
             position = Position(player['positionId']).name
             new_player = TMPlayer(name=player_name,
                                   position=position,
-                                  club=club.name,
+                                  club=standardize_club_name(club.name),
                                   number=int(player['shirtNumber']),
                                   unique_id=int(player['id']))
             player_list.append(new_player)

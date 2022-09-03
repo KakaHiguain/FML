@@ -67,3 +67,17 @@ STANDARD_CLUB_NAMES = {
     'AjaxAmsterdam': 'Ajax',
     'Copenhagen': 'Kobenhavn',
 }
+
+
+def standardize_club_name(club) -> str:
+    club_words = club.split(' ')
+
+    def is_valid_parts(word: str):
+        if all([letter.isupper() for letter in word]):
+            return False
+        if word in ('CF', 'FC', 'Club', 'AFC'):
+            return False
+        return not any([letter.isdigit() for letter in word])
+
+    trimmed_club = ''.join(filter(is_valid_parts, club_words))
+    return STANDARD_CLUB_NAMES.get(trimmed_club, trimmed_club)

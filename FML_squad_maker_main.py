@@ -137,7 +137,7 @@ def main(fs_csv: Path, tm_csv: Path, output_csv: Path):
 
 
 if __name__ == '__main__':
-    for tournament in ['FMC']:
+    for tournament in ['FML', 'FMC']:
         main(EXPORT_PATH / f'{tournament}players{SEASON}.csv',
              EXPORT_PATH / f'tmsquad-{tournament}.csv',
              EXPORT_PATH / f"{tournament}squad.csv")

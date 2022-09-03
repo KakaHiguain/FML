@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 
+# To resolve duplicated player names.
 HARECODED_PLAYER_NAMES = {
     44352: 'L.A.Suarez',
     424784: 'L.J.Suarez',
