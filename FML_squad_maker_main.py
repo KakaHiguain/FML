@@ -25,8 +25,6 @@ HARECODED_PLAYER_NAMES = {
     537602: 'J.MarioNeto',
     149729: 'J.MarioNaval',
     426723: 'M.A.Camara',
-    520662: 'Pepe(F)',
-    14132: 'Pepe(D)',
 }
 
 
@@ -155,7 +153,7 @@ def main(fs_csv: Path, tm_csv: Path, output_csv: Path):
 
 
 if __name__ == '__main__':
-    for tournament in ['FML']:
+    for tournament in ['FML', 'FMC']:
         main(EXPORT_PATH / f'{tournament}players{SEASON}.csv',
              EXPORT_PATH / f'tmsquad-{tournament}.csv',
              EXPORT_PATH / f"{tournament}squad.csv")
