@@ -8,24 +8,8 @@ from typing import List, Dict, Set
 
 from common import *
 from player import Player
-from transfermarkt_squad_maker import TMPlayer
-
-
-HARECODED_PLAYER_NAMES = {
-    # 32816: 'Larangeira',
-    # 476344: 'Aparecido',
-    44352: 'L.A.Suarez',
-    424784: 'L.J.Suarez',
-    129129: 'J.PedroGeraldino',
-    626724: 'J.PedroJunqueira',
-    # 181768: 'Azevedo',
-    # # FMC
-    # 258018: 'P.Rodrigues',
-    # 129473: 'R.Alcantara',
-    537602: 'J.MarioNeto',
-    149729: 'J.MarioNaval',
-    426723: 'M.A.Camara',
-}
+from player_name_utils import HARECODED_PLAYER_NAMES
+from transfermarkt_player import TMPlayer
 
 
 class FSPlayer(Player):
@@ -153,7 +137,7 @@ def main(fs_csv: Path, tm_csv: Path, output_csv: Path):
 
 
 if __name__ == '__main__':
-    for tournament in ['FML', 'FMC']:
+    for tournament in ['FMC']:
         main(EXPORT_PATH / f'{tournament}players{SEASON}.csv',
              EXPORT_PATH / f'tmsquad-{tournament}.csv',
              EXPORT_PATH / f"{tournament}squad.csv")

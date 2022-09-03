@@ -2,79 +2,20 @@
 # -*- coding:utf-8 -*-
 
 
-def remove_special_charx(s):
-    s = s.replace("</i>", "")
-    s = s.replace(u'Á', "A")
-    s = s.replace(u'á', "a")
-    s = s.replace(u'à', "a")
-    s = s.replace(u'ä', "a")
-    s = s.replace(u'â', "a")
-    s = s.replace(u'?', "a")
-    s = s.replace(u'ã', "a")
-    s = s.replace(u'å', "aa")
-    s = s.replace(u'Ç', "C")
-    s = s.replace(u'ç', "c")
-    s = s.replace(u'ð', "d")
-    s = s.replace(u'É', "E")
-    s = s.replace(u'È', "E")
-    s = s.replace(u'é', "e")
-    s = s.replace(u'ë', "e")
-    s = s.replace(u'è', "e")
-    s = s.replace(u'ê', "e")
-    s = s.replace(u'Í', "I")
-    s = s.replace(u'í', "i")
-    s = s.replace(u'ï', "i")
-    s = s.replace(u'Ñ', "N")
-    s = s.replace(u'ñ', "n")
-    s = s.replace(u'Ó', "O")
-    s = s.replace(u'Ö', "O")
-    s = s.replace(u'Ø', "O")
-    s = s.replace(u'ö', "o")
-    s = s.replace(u'ó', "o")
-    s = s.replace(u'ò', "o")
-    s = s.replace(u'ô', "o")
-    s = s.replace(u'ø', "o")
-    s = s.replace(u'Š', "S")
-    s = s.replace(u'š', "s")
-    s = s.replace(u'Ü', "U")
-    s = s.replace(u'ú', "u")
-    s = s.replace(u'ü', "u")
-    s = s.replace(u'ý', "y")
-    s = s.replace(u'Ž', "Z")
-    s = s.replace(u'ž', "z")
-    s = s.replace(u'ß', "ss")
-    s = s.replace(u'æ', "ae")
-    s = s.replace(u'’', "'")
-    s = s.replace(u'&nbsp;', " ")
-    s = s.replace(u'&amp;', "&")
-    s = s.replace(u'&#259;', "a")
-    s = s.replace(u'&#261;', "a")
-    s = s.replace(u'&#262;', "C")
-    s = s.replace(u'&#268;', "C")
-    s = s.replace(u'&#269;', "c")
-    s = s.replace(u'&#263;', "c")
-    s = s.replace(u'&#281;', "e")
-    s = s.replace(u'&#283;', "e")
-    s = s.replace(u'&#287;', "g")
-    s = s.replace(u'&#304;', "I")
-    s = s.replace(u'&#305;', "i")
-    s = s.replace(u'&#317;', "L")
-    s = s.replace(u'&#321;', "L")
-    s = s.replace(u'&#322;', "l")
-    s = s.replace(u'&#324;', "n")
-    s = s.replace(u'&#326;', "n")
-    s = s.replace(u'&#328;', "n")
-    s = s.replace(u'&#337;', "o")
-    s = s.replace(u'&#345;', "r")
-    s = s.replace(u'&#350;', "S")
-    s = s.replace(u'&#351;', "s")
-    s = s.replace(u'&#355;', "t")
-    s = s.replace(u'&#367;', "u")
-    s = s.replace(u'&#537;', "s")
-    s = s.replace(u'\xad', "")
-    s = s.replace(u'\u0107', "c")
-    s = s.strip()
-    return s
+HARECODED_PLAYER_NAMES = {
+    44352: 'L.A.Suarez',
+    424784: 'L.J.Suarez',
+    129129: 'J.PedroGeraldino',
+    607854: 'E.Silva',
+    626724: 'J.PedroJunqueira',
+    # FMC
+    537602: 'J.MarioNeto',
+    149729: 'J.MarioNaval',
+    426723: 'M.A.Camara',
+    520662: 'C.Pepe',
+    14132: 'F.Pepe',
+}
+
 
 def remove_special_char(s):
     # special

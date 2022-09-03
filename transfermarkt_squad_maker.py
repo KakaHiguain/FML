@@ -23,8 +23,7 @@ TOP4_LEAGUE = {"Laliga": "ES1", "Premier League": "GB1", "Bundesliga": "L1", "Se
 
 
 # Main =============================================
-def get_fml_squad():
-    # league_base_url = BASE_URL + "/jumplist/startseite/wettbewerb/"
+def generate_fml_squad():
     csv_file = EXPORT_PATH / 'tmsquad-FML.csv'
     with csv_file.open("w") as f:
         f.write("Name,Position,Club,Number,Unique ID\n")
@@ -53,7 +52,7 @@ def read_ucl_page() -> List[List[str]]:
     return clubs
 
 
-def get_fmc_squad():
+def generate_fmc_squad():
     csv_file = EXPORT_PATH / 'tmsquad-FMC.csv'
     with csv_file.open("w") as f:
         f.write("Name,Position,Club,Number,Unique ID\n")
@@ -65,5 +64,5 @@ def get_fmc_squad():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    get_fml_squad()
-    get_fmc_squad()
+    generate_fml_squad()
+    generate_fmc_squad()

@@ -3,19 +3,16 @@
 
 
 STANDARD_CLUB_NAMES = {
+    # TM club name -> standard club name
     # Spain
     'AtleticodeMadrid': 'AtleticoMadrid',
-    'RCDEspanyolBarcelona': 'Espanyol',
+    'EspanyolBarcelona': 'Espanyol',
     'RealBetisBalompie': 'Betis',
     'CeltadeVigo': 'Celta',
-    'SDEibar': 'Eibar',
-    'SDHuesca': 'Huesca',
-    'CAOsasuna': 'Osasuna',
     'RealValladolid': 'Valladolid',
     'RayoVallecano': 'Vallecano',
-    'RCDMallorca': 'Mallorca',
-    'LevanteUD': 'Levante',
     'DeportivoAlaves': 'Alaves',
+
     # England
     'Brighton&HoveAlbion': 'Brighton',
     'SheffUtd': 'Sheffield',
@@ -29,6 +26,8 @@ STANDARD_CLUB_NAMES = {
     'TottenhamHotspur': 'Tottenham',
     'WestHamUnited': 'WestHam',
     'WolverhamptonWanderers': 'Wolves',
+    'NottinghamForest': "N'Forest",
+
     # Germany
     'ArminiaBielefeld': 'Bielefeld',
     'VfLBochum': 'Bochum',
@@ -36,48 +35,35 @@ STANDARD_CLUB_NAMES = {
     'BorussiaDortmund': 'Dortmund',
     "BorussiaMonchengladbach": "M'gladbach",
     'EintrachtFrankfurt': 'Frankfurt',
-    'SCFreiburg': 'Freiburg',
     'SpVggGreutherFurth': 'Furth',
-    'HerthaBSC': 'HerthaBerlin',
-    'TSGHoffenheim': 'Hoffenheim',
-    'RBLeipzig': 'Leipzig',
-    'FSVMainz': 'Mainz',
+    'Hertha': 'HerthaBerlin',
     'VfBStuttgart': 'Stuttgart',
     'WerderBremen': 'Bremen',
     'VfLWolfsburg': 'Wolfsburg',
+    'SVWerderBremen': 'Bremen',
+
     # Italy
-    'ACMilan': 'Milan',
     'InterMilan': 'Inter',
-    'SSCNapoli': 'Napoli',
-    'ASRoma': 'Roma',
-    'SSLazio': 'Lazio',
-    'USSassuolo': 'Sassuolo',
-    'UCSampdoria': 'Sampdoria',
     'CagliariCalcio': 'Cagliari',
     'SpeziaCalcio': 'Spezia',
     'UdineseCalcio': 'Udinese',
-    'GenoaCFC': 'Genoa',
     'HellasVerona': 'Verona',
-    'ACFFiorentina': 'Fiorentina',
-    'AtalantaBC': 'Atalanta',
-    'USSalernitana': 'Salernitana',
+
     # FMC
-    'LokoMoscow': 'LokomotivMoscow',
-    'RedBullSalzburg': 'Salzburg',
-    'ShakhtarD.': 'ShakhtarDonetsk',
-    'Olympiacos': 'Olympiakos',
-    'FCMidtjylland': 'Midtjylland',
-    'StadeRennais': 'Rennes',
-    'ZenitSt.Petersburg': 'Zenit',
-    'Basaksehir': 'Istanbul',
+    # Portugal
+    'Sporting': 'SportingCP',
+    # France
     'ParisSaint-Germain': 'Paris',
-    'BSCYoungBoys': 'YoungBoys',
-    'LOSCLille': 'Lille',
-    'MalmoFF': 'Malmo',
-    'FCSheriff': 'Sheriff',
+    'OlympiqueMarseille': 'Marseille',
+    'StadeRennais': 'Rennes',
+    # Russia
+    'LokoMoscow': 'LokomotivMoscow',
+    'ZenitSt.Petersburg': 'Zenit',
+    # Others
+    'RedBullSalzburg': 'Salzburg',
+    'Olympiacos': 'Olympiakos',
+    'Basaksehir': 'Istanbul',
     'ShakhtarDonetsk': 'Shakhtar',
-    'BruggeKV': 'Brugge',
     'AjaxAmsterdam': 'Ajax',
-    'BesiktasJK': 'Besiktas',
-    'SLBenfica': 'Benfica',
+    'Copenhagen': 'Kobenhavn',
 }

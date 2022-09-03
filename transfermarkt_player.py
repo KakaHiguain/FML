@@ -15,11 +15,14 @@ class TMPlayer(Player):
     def _standardize_club_name(self):
         club_words = self.club.split(' ')
 
-        def is_valid(word: str):
-            if word == 'CF' or word == 'FC' or word == 'Club':
+        def is_valid_parts(word: str):
+            if all([letter.isupper() for letter in word]):
+                return False
+            if word in ('CF', 'FC', 'Club', 'AFC'):
                 return False
             return not any([letter.isdigit() for letter in word])
-        self.club = ''.join(filter(is_valid, club_words))
+        self.club = ''.join(filter(is_valid_parts, club_words))
+
         if self.club in STANDARD_CLUB_NAMES:
             self.club = STANDARD_CLUB_NAMES[self.club]
 
