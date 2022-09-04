@@ -118,6 +118,16 @@ def get_merged_player_list(fs_csv: Path, tm_csv: Path) -> List[TMPlayer]:
     return fml_player_list
 
 
+def _export_to_csv(tournament: str, players: List[TMPlayer]):
+    with (EXPORT_PATH / f"{tournament}squad.csv").open("w") as f:
+        f.write("Name,Position,Club,Number,Unique ID\n")
+        for player in players:
+            if not re.match(r"^[A-Za-z'.\-]+$", player.name):
+                print("Detect non-alphabet character in: ", player.name)
+            f.write(player.to_csv_line())
+            # print(player.to_csv_line().rstrip())
+
+
 def main():
     fml_players = get_merged_player_list(
         EXPORT_PATH / f'FMLplayers{SEASON}.csv', EXPORT_PATH / 'tmsquad-FML.csv')
@@ -127,20 +137,9 @@ def main():
     first_name_dict = get_first_name_dict([player.name for player in fml_players + fmc_players])
     deduplicate_player_names(fml_players, first_name_dict)
     deduplicate_player_names(fmc_players, first_name_dict)
-    with (EXPORT_PATH / "FMLsquad.csv").open("w") as f:
-        f.write("Name,Position,Club,Number,Unique ID\n")
-        for player in fml_players:
-            # Detect non-alphabet character.
-            if not re.match(r"^[A-Za-z'.\-]+$", player.name):
-                print(player.name)
-            f.write(player.to_csv_line())
-            # print(player.to_csv_line().rstrip())
-    with (EXPORT_PATH / "FMCsquad.csv").open("w") as f:
-        f.write("Name,Position,Club,Number,Unique ID\n")
-        for player in fmc_players:
-            if not re.match(r"^[A-Za-z'.\-]+$", player.name):
-                print(player.name)
-            f.write(player.to_csv_line())
+
+    _export_to_csv('FML', fml_players)
+    _export_to_csv('FMC', fmc_players)
 
 
 if __name__ == '__main__':
