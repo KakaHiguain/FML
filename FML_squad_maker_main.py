@@ -4,7 +4,7 @@ from collections import defaultdict
 import csv
 from pathlib import Path
 import re
-from typing import List, Dict, Set
+from typing import List, Dict
 
 from common import *
 from player import Player
@@ -58,12 +58,12 @@ def merge_database(fs_player_database: PlayerDataBase,
             unique_id = -1
             continue
         fml_player = TMPlayer(tm_player.name, fs_player.position, club, number, unique_id)
+        fml_player.standardize_name()
         player_list.append(fml_player)
     return player_list
 
 
-def get_unique_player_name(name: str, first_name_dict: Dict[str, List[str]],
-                           last_name_set: Set[str], first_name_count: Dict[str, int]):
+def get_unique_player_name(name: str, first_name_dict: Dict[str, List[str]]):
     name_parts = name.split(' ')
     if len(name_parts) == 1:
         return name
@@ -71,8 +71,6 @@ def get_unique_player_name(name: str, first_name_dict: Dict[str, List[str]],
     first_names = first_name_dict[last_name]
     if len(first_names) == 1:
         return last_name
-    # if first_name not in last_name_set and first_name_count[first_name] == 1:
-    #     return first_name
     first_letter = first_name[0]
     is_duplicated = False
     for name in first_names:
@@ -84,60 +82,66 @@ def get_unique_player_name(name: str, first_name_dict: Dict[str, List[str]],
     return first_name + last_name
 
 
-def standardize_player_names(player_list: List[TMPlayer]):
-    for player in player_list:
-        name_parts = [part for part in player.name.split(' ') if part != 'Junior']
-        while len(name_parts) >= 2:
-            last_second_part = name_parts[-2]
-            if len(last_second_part) >= 4 or \
-               (len(last_second_part) == 3 and last_second_part[0].isupper()):
-                break
-            name_parts[-2] += name_parts[-1]
-            name_parts.pop()
-        player.name = ' '.join(name_parts)
-
+def get_first_name_dict(player_names: List[str]) -> Dict[str, List[str]]:
+    """ Return last name -> list of first names """
     last_name_set = set()
     first_name_count = defaultdict(int)
     first_name_dict = defaultdict(list)
-    for player in player_list:
-        name_parts = player.name.split(' ')
+    for name in player_names:
+        name_parts = name.split(' ')
         last_name = name_parts[-1]
         first_name = name_parts[-2] if len(name_parts) > 1 else ''
         last_name_set.add(last_name)
         first_name_count[first_name] += 1
         first_name_dict[last_name].append(first_name)
+    return first_name_dict
 
+
+def deduplicate_player_names(player_list: List[TMPlayer], first_name_dict: Dict[str, List[str]]):
     final_name_set = set()
     for player in player_list:
-        player.name = get_unique_player_name(player.name, first_name_dict, last_name_set, first_name_count)
+        player.name = get_unique_player_name(player.name, first_name_dict)
         if player.unique_id in HARECODED_PLAYER_NAMES:
             player.name = HARECODED_PLAYER_NAMES[player.unique_id]
         if player.name in final_name_set:
-            print('Duplicate:', player.to_csv_line().rstrip())
+            print('Still duplicate:', player.to_csv_line().rstrip())
         final_name_set.add(player.name)
 
 
-def main(fs_csv: Path, tm_csv: Path, output_csv: Path):
+def get_merged_player_list(fs_csv: Path, tm_csv: Path) -> List[TMPlayer]:
     fs_player_list = read_player_csv(fs_csv, FSPlayer)
     tm_player_list = read_player_csv(tm_csv, TMPlayer)
     fs_player_database = PlayerDataBase(fs_player_list)
     tm_player_database = PlayerDataBase(tm_player_list)
 
     fml_player_list = merge_database(fs_player_database, tm_player_database)
+    return fml_player_list
 
-    standardize_player_names(fml_player_list)
-    with output_csv.open("w") as f:
+
+def main():
+    fml_players = get_merged_player_list(
+        EXPORT_PATH / f'FMLplayers{SEASON}.csv', EXPORT_PATH / 'tmsquad-FML.csv')
+    fmc_players = get_merged_player_list(
+        EXPORT_PATH / f'FMCplayers{SEASON}.csv', EXPORT_PATH / 'tmsquad-FMC.csv')
+
+    first_name_dict = get_first_name_dict([player.name for player in fml_players + fmc_players])
+    deduplicate_player_names(fml_players, first_name_dict)
+    deduplicate_player_names(fmc_players, first_name_dict)
+    with (EXPORT_PATH / "FMLsquad.csv").open("w") as f:
         f.write("Name,Position,Club,Number,Unique ID\n")
-        for player in fml_player_list:
+        for player in fml_players:
             # Detect non-alphabet character.
             if not re.match(r"^[A-Za-z'.\-]+$", player.name):
                 print(player.name)
             f.write(player.to_csv_line())
             # print(player.to_csv_line().rstrip())
+    with (EXPORT_PATH / "FMCsquad.csv").open("w") as f:
+        f.write("Name,Position,Club,Number,Unique ID\n")
+        for player in fmc_players:
+            if not re.match(r"^[A-Za-z'.\-]+$", player.name):
+                print(player.name)
+            f.write(player.to_csv_line())
 
 
 if __name__ == '__main__':
-    for tournament in ['FML', 'FMC']:
-        main(EXPORT_PATH / f'{tournament}players{SEASON}.csv',
-             EXPORT_PATH / f'tmsquad-{tournament}.csv',
-             EXPORT_PATH / f"{tournament}squad.csv")
+    main()
