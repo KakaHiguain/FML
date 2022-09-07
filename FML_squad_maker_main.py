@@ -4,7 +4,7 @@ from collections import defaultdict
 import csv
 from pathlib import Path
 import re
-from typing import List, Dict
+from typing import List, Dict, Set
 
 from common import *
 from player import Player
@@ -97,15 +97,15 @@ def get_first_name_dict(player_names: List[str]) -> Dict[str, List[str]]:
     return first_name_dict
 
 
-def deduplicate_player_names(player_list: List[TMPlayer], first_name_dict: Dict[str, List[str]]):
-    final_name_set = set()
+def deduplicate_player_names(
+        player_list: List[TMPlayer], first_name_dict: Dict[str, List[str]], final_player_names: Set[str]):
     for player in player_list:
         player.name = get_unique_player_name(player.name, first_name_dict)
         if player.unique_id in HARECODED_PLAYER_NAMES:
             player.name = HARECODED_PLAYER_NAMES[player.unique_id]
-        if player.name in final_name_set:
+        if player.name in final_player_names:
             print('Still duplicate:', player.to_csv_line().rstrip())
-        final_name_set.add(player.name)
+        final_player_names.add(player.name)
 
 
 def get_merged_player_list(fs_csv: Path, tm_csv: Path) -> List[TMPlayer]:
@@ -135,8 +135,9 @@ def main():
         EXPORT_PATH / f'FMCplayers{SEASON}.csv', EXPORT_PATH / 'tmsquad-FMC.csv')
 
     first_name_dict = get_first_name_dict([player.name for player in fml_players + fmc_players])
-    deduplicate_player_names(fml_players, first_name_dict)
-    deduplicate_player_names(fmc_players, first_name_dict)
+    final_player_names = set()
+    deduplicate_player_names(fml_players, first_name_dict, final_player_names)
+    deduplicate_player_names(fmc_players, first_name_dict, final_player_names)
 
     _export_to_csv('FML', fml_players)
     _export_to_csv('FMC', fmc_players)

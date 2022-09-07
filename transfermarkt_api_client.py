@@ -55,8 +55,15 @@ class TransfermarktApiClient:
     def get_players_from_club(cls, club: Club) -> List[TMPlayer]:
         logging.info("Visit club: %s %s", club.name, club.url)
 
-        response = requests.get(f"{cls._BASE_URL}/quickselect/players/{club.id}",
-                                headers=cls._HEADERS)
+        while True:
+            try:
+                response = requests.get(f"{cls._BASE_URL}/quickselect/players/{club.id}",
+                                        headers=cls._HEADERS)
+            except requests.RequestException as e:
+                logging.exception('Request failed, retry...')
+                continue
+            break
+
         player_list = []
         for player in response.json():
             player_name = remove_special_char(player['name'])
