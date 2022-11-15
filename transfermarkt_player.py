@@ -14,13 +14,3 @@ class TMPlayer(Player):
         line = f'{self.name},{self.position},{self.club},{self.number},{self.unique_id}'
         return line + '\n' if new_line else line
 
-    def standardize_name(self):
-        name_parts = [part for part in self.name.split(' ') if part != 'Junior']
-        while len(name_parts) >= 2:
-            last_second_part = name_parts[-2]
-            if len(last_second_part) >= 4 or \
-               (len(last_second_part) == 3 and last_second_part[0].isupper()):
-                break
-            name_parts[-2] += name_parts[-1]
-            name_parts.pop()
-        self.name = ' '.join(name_parts)

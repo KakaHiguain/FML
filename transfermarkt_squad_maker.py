@@ -64,5 +64,5 @@ def generate_fmc_squad():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    # generate_fml_squad()
+    generate_fml_squad()
     generate_fmc_squad()

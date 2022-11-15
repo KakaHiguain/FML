@@ -69,6 +69,31 @@ STANDARD_CLUB_NAMES = {
 }
 
 
+# To resolve duplicated player names.
+HARECODED_PLAYER_NAMES = {
+    44352: 'L.A.Suarez',
+    424784: 'L.J.Suarez',
+    129129: 'J.PedroGeraldino',
+    607854: 'E.Silva',
+    626724: 'J.PedroJunqueira',
+    375382: 'A.R.Almeida',
+    192765: 'B.T.Davies',
+    695454: 'O.Chiquinho',
+    428791: 'PaulinhoFilho',
+    668268: 'M.Alencar',
+    # FMC
+    537602: 'J.MarioNeto',
+    149729: 'J.MarioNaval',
+    426723: 'M.A.Camara',
+    520662: 'C.Pepe',
+    14132: 'F.Pepe',
+    83466: 'A.M.Almeida',
+    257097: 'B.K.Davies',
+    550495: 'FernandoPedro',
+    334557: 'M.Chiquinho',
+    211072: 'PaulinhoFernandes',
+}
+
 def standardize_club_name(club) -> str:
     club_words = club.split(' ')
 

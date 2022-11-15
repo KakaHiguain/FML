@@ -2,5 +2,5 @@
 
 from pathlib import Path
 
-SEASON = '22-23'
+SEASON = 'WC2022'
 EXPORT_PATH = Path('export') / SEASON

@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
 import csv
-from pathlib import Path
 import re
 from typing import List, Dict, Set
 
 from common import *
 from player import Player
-from player_name_utils import HARECODED_PLAYER_NAMES
+from player_name_utils import get_unique_player_name, get_first_name_dict
+from transfermarkt_club_name_utils import HARECODED_PLAYER_NAMES
 from transfermarkt_player import TMPlayer
 
 
@@ -61,40 +60,6 @@ def merge_database(fs_player_database: PlayerDataBase,
         fml_player.standardize_name()
         player_list.append(fml_player)
     return player_list
-
-
-def get_unique_player_name(name: str, first_name_dict: Dict[str, List[str]]):
-    name_parts = name.split(' ')
-    if len(name_parts) == 1:
-        return name
-    last_name, first_name = name_parts[-1], name_parts[-2]
-    first_names = first_name_dict[last_name]
-    if len(first_names) == 1:
-        return last_name
-    first_letter = first_name[0]
-    is_duplicated = False
-    for name in first_names:
-        if name and name != first_name and name[0] == first_letter:
-            is_duplicated = True
-
-    if not is_duplicated:
-        return '{}.{}'.format(first_letter, last_name)
-    return first_name + last_name
-
-
-def get_first_name_dict(player_names: List[str]) -> Dict[str, List[str]]:
-    """ Return last name -> list of first names """
-    last_name_set = set()
-    first_name_count = defaultdict(int)
-    first_name_dict = defaultdict(list)
-    for name in player_names:
-        name_parts = name.split(' ')
-        last_name = name_parts[-1]
-        first_name = name_parts[-2] if len(name_parts) > 1 else ''
-        last_name_set.add(last_name)
-        first_name_count[first_name] += 1
-        first_name_dict[last_name].append(first_name)
-    return first_name_dict
 
 
 def deduplicate_player_names(

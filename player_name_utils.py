@@ -1,34 +1,51 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
+from collections import defaultdict
+import re
+from typing import Dict, List
 
-# To resolve duplicated player names.
-HARECODED_PLAYER_NAMES = {
-    44352: 'L.A.Suarez',
-    424784: 'L.J.Suarez',
-    129129: 'J.PedroGeraldino',
-    607854: 'E.Silva',
-    626724: 'J.PedroJunqueira',
-    375382: 'A.R.Almeida',
-    192765: 'B.T.Davies',
-    695454: 'O.Chiquinho',
-    428791: 'PaulinhoFilho',
-    668268: 'M.Alencar',
-    # FMC
-    537602: 'J.MarioNeto',
-    149729: 'J.MarioNaval',
-    426723: 'M.A.Camara',
-    520662: 'C.Pepe',
-    14132: 'F.Pepe',
-    83466: 'A.M.Almeida',
-    257097: 'B.K.Davies',
-    550495: 'FernandoPedro',
-    334557: 'M.Chiquinho',
-    211072: 'PaulinhoFernandes',
-}
+
+def without_irregular_char(s: str) -> bool:
+    return bool(re.match(r"^[\sa-zA-Z'.-]+$", s))
+
+
+def get_unique_player_name(name: str, first_name_dict: Dict[str, List[str]]):
+    name_parts = name.split(' ')
+    if len(name_parts) == 1:
+        return name
+    last_name, first_name = name_parts[-1], name_parts[-2]
+    first_names = first_name_dict[last_name]
+    if len(first_names) == 1:
+        return last_name
+    first_letter = first_name[0]
+    is_duplicated = False
+    for name in first_names:
+        if name and name != first_name and name[0] == first_letter:
+            is_duplicated = True
+
+    if not is_duplicated:
+        return '{}.{}'.format(first_letter, last_name)
+    return first_name + last_name
+
+
+def get_first_name_dict(player_names: List[str]) -> Dict[str, List[str]]:
+    """ Return last name -> list of first names """
+    last_name_set = set()
+    first_name_count = defaultdict(int)
+    first_name_dict = defaultdict(list)
+    for name in player_names:
+        name_parts = name.split(' ')
+        last_name = name_parts[-1]
+        first_name = name_parts[-2] if len(name_parts) > 1 else ''
+        last_name_set.add(last_name)
+        first_name_count[first_name] += 1
+        first_name_dict[last_name].append(first_name)
+    return first_name_dict
 
 
 def remove_special_char(s):
+    s = s.replace(' ', ' ')
     # special
     s = s.replace('&#263;', 'c')
     # aA
@@ -79,6 +96,7 @@ def remove_special_char(s):
     s = s.replace('ń', 'n')
     s = s.replace('Ñ', 'N')
     s = s.replace('ß', 'ss')
+    s = s.replace('ś', 's')
     s = s.replace('š', 's')
     s = s.replace('ş', 's')
     s = s.replace('ș', 's')

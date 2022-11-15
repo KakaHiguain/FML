@@ -4,7 +4,7 @@ import requests
 
 
 # TODO: refactor this file
-def get_page(url, headers):
+def get_page(url, headers=None):
     sessions = requests.session()
     while True:
         try:
